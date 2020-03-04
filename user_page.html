@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+    <head>
+        <style>
+            .QRcode{
+    
+                display: block;
+                margin-top: 5%;
+                margin-left: auto;
+                margin-right: auto;
+                width: 15%;
+  
+            }
+            .Account-details{
+                display: block;
+                
+                margin-left: auto;
+                margin-right: auto;
+                width: 15%;
+            }
+            
+
+            
+        </style>
+        <title>Osmosis</title>
+        
+    </head>
+    <body>
+        <div class="Account-details">
+            Account Balance<p id="Balance">Rs 250</p>
+            <input type="number" min="0" id ="amount">
+            <button onclick="AddMoney()">ADD Money</button>
+        </div>
+        
+        <script>
+                //fetches account balance
+                fetch('http://127.0.0.1:4010/balance')
+                .then((response) => {
+                        return response.json();
+                })
+                .then((data) => {
+                    document.getElementById("Balance").innerHTML = data["balance"];
+                });
+                //top-up
+                function AddMoney(){
+                    
+                    var amount = document.getElementById("amount").value;
+
+                    console.log(typeof(amount));
+                    fetch('http://127.0.0.1:4010/balance',{
+                        method:'Patch',
+                        headers: {
+                            
+                            'Content-Type': 'application/json'
+                        },
+                        
+                        body:{balance:parseFloat(amount)}
+                        
+                    })
+                    
+
+                    
+
+                    
+                }
+                fetch('http://127.0.0.1:4010/journeys')
+                .then((response) => {
+                        return response.json();
+                })
+                .then((data) => {
+                    
+                    console.log(data);
+                    let result = '';
+                    for (trip of data.trips){
+                        
+                        result += `<div>
+                            
+                            <ul class="ul">
+                                <li> Pickup Time: ${trip.pickup.time}</li>
+                                <li> Pickup Date: ${trip.pickup.date}</li>
+                                <li> Start Location : ${trip.pickup.location}</li>
+                                <li> Drop Time: ${trip.drop.time}</li>
+                                <li> Drop Date: ${trip.pickup.date}</li>
+                                <li> Drop: ${trip.drop.location} </li>
+                                <li> Price: ${trip.fare}</li>
+                                <li> Fine: ${trip.fine}</li>
+                                
+                                
+                            </ul>
+                        </div>`;
+
+                        
+                        document.getElementById('result').innerHTML = result;
+                    }
+                })
+
+                fetch('http://127.0.0.1:4010/buses')
+                .then((response) => {
+                        return response.json();
+                })
+                .then((data) => {
+                    
+                    console.log(data);
+                    let bus_routes = '';
+                    for (routes of data.routes ){
+                        bus_routes +=`<h1>${routes.route} Route<h1>`
+                        console.log(bus_routes)
+                        for(stops of routes.stops)
+                        {
+                            bus_routes += `<p>Stop Name: ${stops.name} </p>`;
+                            bus_routes += `<p>BUSES:</p>`;
+                            /*for(buses in data.buses)
+                            {
+                                if(buses.route == routes.route)
+                                {
+                                    bus_routes += `<ul class="bus-list">
+                                        <li>${buses.bus}-${buses.passesngers}Passengers</li>
+                                        
+                                        </ul>`
+                                        
+                                    console.log(bus_routes)    
+                                }
+                            }*/
+                            console.log(bus_routes)
+                            bus_routes += `<p>Costs:</p>`
+                            for(dest in routes.stops){
+                                if (stops.name != dest.name)
+                                    bus_routes += `<p>From ${dest.name}:</p>`;
+
+                            }
+                            
+
+                        }
+                        
+                    }
+
+                })
+                
+                
+                         
+        
+        </script> 
+        
+        <img class="QRcode" src="./QR_random.png" alt="the internet is down">
+
+        <h1>Past Trips</h1>
+        <div id="result">
+
+        </div>
+        <h1>Bus Routes</h1>
+        <div id="bus-routes">
+
+        </div>
+
+        
+        
+       
+
+        
+        
+    </body>
+</html>
