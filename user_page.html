@@ -11,25 +11,18 @@
                 width: 15%;
   
             }
-            .Account-details{
-                display: block;
-                
-                margin-left: auto;
-                margin-right: auto;
-                width: 15%;
-            }
-            
-
-            
         </style>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="./user_style.css">
         <title>Osmosis</title>
         
     </head>
     <body>
         <div class="Account-details">
-            Account Balance<p id="Balance">Rs 250</p>
+            <p>Account Balance</p> 
+            <p id="Balance">Rs 250</p>
             <input type="number" min="0" id ="amount">
-            <button onclick="AddMoney()">ADD Money</button>
+            <button onclick="AddMoney()">Add Money</button>
         </div>
         
         <script>
@@ -103,7 +96,7 @@
                     console.log(data);
                     let bus_routes = '';
                     for (routes of data.routes ){
-                        bus_routes +=`<h1>${routes.route} Route<h1>`
+                        bus_routes +=`<h1>${routes.route} Route</h1>`
                         console.log(bus_routes)
                         for(stops of routes.stops)
                         {
@@ -142,21 +135,20 @@
         </script> 
         
         <img class="QRcode" src="./QR_random.png" alt="the internet is down">
-
-        <h1>Past Trips</h1>
-        <div id="result">
-
+        <div style="display: flex;">
+            <div class="Account-details" style="padding-bottom: 300px; width: 300px; margin-left: 400px;">
+                <h1>Past Trips</h1>
+                <div id="result">
+        
+                </div>
+            </div>
+            <div class="Account-details" id="bus-routes">
+                <h1>Bus Routes</h1>
+                <div id="bus-routes">
+    
+                </div>
+            </div>        
         </div>
-        <h1>Bus Routes</h1>
-        <div id="bus-routes">
-
-        </div>
-
-        
-        
-       
-
-        
         
     </body>
 </html>
